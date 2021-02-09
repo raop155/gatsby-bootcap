@@ -1,8 +1,15 @@
 import { Link, graphql, useStaticQuery } from "gatsby"
-import React from "react"
+import React, { useContext } from "react"
 import styles from "./header.module.scss"
+import {
+  GlobalDispatchProvider,
+  GlobalStateProvider,
+} from "../context/GlobalContextProvider"
 
 const Header = () => {
+  const dispatch = useContext(GlobalDispatchProvider)
+  const state = useContext(GlobalStateProvider)
+
   const data = useStaticQuery(graphql`
     query {
       site {
@@ -44,6 +51,14 @@ const Header = () => {
           </li>
         </ul>
       </nav>
+      {state.cart}
+      <button
+        onClick={() => {
+          dispatch({ type: "ADD_TO_CART" })
+        }}
+      >
+        Dispatch
+      </button>
     </header>
   )
 }
